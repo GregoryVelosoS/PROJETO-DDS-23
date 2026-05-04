@@ -1,0 +1,114 @@
+<%- include('partials/header') %>
+
+<div class="container">
+    <h2>Painel do Ofertante</h2>
+    <p>Área exclusiva para gerenciar seu desapego e visualizar seus contatos de troca.</p>
+    
+    <a href="/produtos/cadastro" class="btn btn-secondary" style="margin-bottom: 30px;">+ Anunciar Novo Produto</a>
+
+    <!-- NOVA SEÇÃO: PESSOAS INTERESSADAS (O JOIN DO SQL É EXIBIDO AQUI) -->
+    <div style="border-left: 5px solid var(--cor-destaque); padding-left: 15px; margin-bottom: 40px;">
+        <h3 style="color: var(--cor-destaque); margin-bottom: 5px;">🔥 Meus Leads (Interessados)</h3>
+        <p style="font-size: 14px; margin-bottom: 15px;">Estes usuários clicaram em "Tenho Interesse" nos seus produtos públicos.</p>
+        
+        <% if(interessados && interessados.length > 0) { %>
+            <table style="width: 100%; border-collapse: collapse; background-color: var(--cor-fundo);">
+                <thead>
+                    <tr style="background-color: var(--cor-primaria); color: var(--cor-fundo);">
+                        <th style="padding: 10px; border: 1px solid var(--cor-borda);">Data do Match</th>
+                        <th style="padding: 10px; border: 1px solid var(--cor-borda);">Qual Produto?</th>
+                        <th style="padding: 10px; border: 1px solid var(--cor-borda);">Pessoa</th>
+                        <th style="padding: 10px; border: 1px solid var(--cor-borda);">Contato (WhatsApp)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% interessados.forEach(function(i) { %>
+                        <tr>
+                            <!-- Formata a data do banco para o padrão brasileiro -->
+                            <td style="padding: 10px; border: 1px solid var(--cor-borda);"><%= new Date(i.data_interesse).toLocaleDateString('pt-BR') %></td>
+                            <td style="padding: 10px; border: 1px solid var(--cor-borda);"><strong><%= i.nome_produto %></strong></td>
+                            <td style="padding: 10px; border: 1px solid var(--cor-borda);"><%= i.nome_interessado %></td>
+                            <td style="padding: 10px; border: 1px solid var(--cor-borda); font-weight: bold; color: var(--cor-destaque);">
+                                <%= i.telefone_interessado %>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } else { %>
+            <div style="padding: 20px; border: 2px dashed var(--cor-borda); text-align: center;">
+                Ainda não há interessados nos seus itens. Verifique se eles estão públicos na Vitrine!
+            </div>
+        <% } %>
+    </div>
+
+    <!-- SEÇÃO ANTIGA: PRODUTOS DO CARA -->
+    <h3>Meu Catálogo Registrado</h3>
+    <!-- Aplicada a classe css que garante que a tabela estique (90 a 100%) -->
+    <table class="tabela-dados">
+        <thead>
+            <tr>
+                <th>Foto e Item</th>
+                <th style="text-align: center;">Status na Vitrine</th>
+                <th style="text-align: center;">Condição</th>
+                <th style="text-align: center;">Ações Manuais</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% produtos.forEach(function(p) { %>
+                <tr>
+                    <td style="display: flex; align-items: center; gap: 15px;">
+                        <!-- Miniatura -->
+                        <% if(p.foto) { %>
+                            <img src="<%= p.foto %>" alt="Foto do Produto" style="width: 60px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid var(--cor-borda);">
+                        <% } else { %>
+                            <div style="width: 60px; height: 60px; background: #EEE; border: 1px solid #CCC; text-align:center; line-height:60px; font-size:10px;">Sem Foto</div>
+                        <% } %>
+                        
+                        <div>
+                            <strong><%= p.nome %></strong> <br>
+                            <small>R$ <%= p.preco %></small>
+                        </div>
+                    </td>
+                    
+                    <td style="text-align: center; vertical-align: middle;">
+                        <% if(p.is_publico) { %>
+                            <!-- Olho Aberto: Fundo Preto com Letra Branca -->
+                            <span style="font-weight: bold; background-color: var(--cor-texto-principal); color: var(--cor-texto-inverso); padding: 5px 10px; border-radius: 4px;">
+                                <i class="fa-solid fa-eye"></i> Público
+                            </span>
+                        <% } else { %>
+                            <!-- Olho Cortado: Vermelho Destaque -->
+                            <span style="font-weight: bold; color: var(--cor-destaque);">
+                                <i class="fa-solid fa-eye-slash"></i> Privado
+                            </span>
+                        <% } %>
+                    </td>
+
+                    <td style="text-align: center; vertical-align: middle;">
+                        <%= p.condicao.toUpperCase() %>
+                    </td>
+
+                    <!-- Coluna de Ações com Botões FontAwesome -->
+                    <td style="text-align: center; white-space: nowrap; vertical-align: middle;">
+                        
+                        <!-- BOTÃO DE TOGGLE DE STATUS -->
+                        <form action="/produtos/alternar-visibilidade/<%= p.id %>" method="POST" style="display:inline;">
+                            <button type="submit" class="btn <%= p.is_publico ? 'btn-secondary' : 'btn-primary' %>" style="padding: 5px 10px; margin-right: 5px;" title="Ligar/Desligar da Vitrine">
+                                <i class="fa-solid fa-power-off"></i> Alternar
+                            </button>
+                        </form>
+                        
+                        <!-- BOTÃO DE EDIÇÃO COM A ROTA NOVA -->
+                        <a href="/produtos/editar/<%= p.id %>" class="btn btn-secondary" style="padding: 5px 10px; text-decoration: none;">
+                            <i class="fa-solid fa-pen"></i> Editar
+                        </a>
+                        
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('partials/footer') %>

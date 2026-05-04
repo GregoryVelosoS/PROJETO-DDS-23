@@ -1,0 +1,71 @@
+<%- include('partials/header') %>
+
+<div class="container" style="max-width: 1000px;">
+    
+    <div style="text-align: center; margin-bottom: 40px;">
+        <h2 style="color: var(--cor-destaque); font-size: 32px;"><i class="fa-solid fa-store"></i> Vitrine de Trocas</h2>
+        <p style="color: var(--cor-texto-secundario);">Navegue pelos produtos que estão sendo oferecidos pelos usuários da plataforma.</p>
+    </div>
+
+    <!-- GRID DOS CARDS DE PRODUTOS (Layout Automático e Responsivo) -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px;">
+        
+        <!-- Verifica se há produtos cadastrados na Vitrine -->
+        <% if (produtos && produtos.length > 0) { %>
+            <% produtos.forEach(function(p) { %>
+                
+                <div class="card" style="border: 2px solid var(--cor-borda); box-shadow: 4px 4px 0px var(--cor-borda); background: var(--cor-fundo); display: flex; flex-direction: column; height: 100%;">
+                    
+                    <% if(p.foto) { %>
+                        <img src="<%= p.foto %>" alt="<%= p.nome %>" style="width: 100%; height: 200px; object-fit: cover; border-bottom: 2px solid var(--cor-borda);">
+                    <% } else { %>
+                        <div style="width: 100%; height: 200px; background: #EEE; border-bottom: 2px solid var(--cor-borda); display:flex; align-items:center; justify-content:center; color: var(--cor-texto-secundario);">
+                            <i class="fa-solid fa-image fa-2x"></i>
+                        </div>
+                    <% } %>
+                    
+                    <!-- Conteúdo do Card -->
+                    <div style="padding: 15px; display: flex; flex-direction: column; flex-grow: 1;">
+                        <h3 style="margin: 0 0 10px 0; color: var(--cor-texto-principal);"><%= p.nome %></h3>
+                        
+                        <div style="margin-bottom: 15px;">
+                            <span style="font-weight: bold; color: var(--cor-destaque); font-size: 18px;">R$ <%= p.preco %></span>
+                            <span style="background: var(--cor-texto-principal); color: var(--cor-texto-inverso); font-size: 11px; padding: 3px 6px; border-radius: 4px; margin-left: 10px; vertical-align: top;"><%= p.condicao.toUpperCase() %></span>
+                        </div>
+                        
+                        <p style="color: var(--cor-texto-secundario); font-size: 14px; line-height: 1.4; flex-grow: 1; margin-bottom: 20px;">
+                            <%= p.descricao %>
+                        </p>
+                        
+                        <!-- BOTÃO DINÂMICO DE INTERESSE -->
+                        <form action="/produtos/alternar-interesse/<%= p.id %>" method="POST" style="margin-top: auto;">
+                            <!-- O EJS procura o ID desse produto dentro da lista de Interesses que o Controller mandou -->
+                            <% if (meusInteresses && meusInteresses.includes(p.id)) { %>
+                                <!-- ESTADO 2: Com Interesse (Botão Preto, Ícone Vermelho Cheio) -->
+                                <button type="submit" class="btn" style="width: 100%; background-color: var(--cor-texto-principal); color: var(--cor-texto-inverso); border-color: var(--cor-texto-principal);">
+                                    <i class="fa-solid fa-heart" style="color: var(--cor-destaque);"></i> Remover Interesse
+                                </button>
+                            <% } else { %>
+                                <!-- ESTADO 1: Sem Interesse (Botão Vermelho, Ícone Vazio) -->
+                                <button type="submit" class="btn btn-secondary" style="width: 100%;">
+                                    <i class="fa-regular fa-heart"></i> Tenho Interesse
+                                </button>
+                            <% } %>
+                        </form>
+                        
+                    </div>
+                </div>
+
+            <% }) %>
+        <% } else { %>
+            <div style="grid-column: 1 / -1; text-align: center; padding: 40px; border: 2px dashed var(--cor-borda);">
+                <i class="fa-solid fa-box-open fa-3x" style="color: var(--cor-texto-secundario); margin-bottom: 15px;"></i>
+                <h3 style="color: var(--cor-texto-principal);">A vitrine está vazia!</h3>
+                <p style="color: var(--cor-texto-secundario);">Nenhum produto foi disponibilizado publicamente ainda.</p>
+            </div>
+        <% } %>
+
+    </div>
+</div>
+
+<%- include('partials/footer') %>

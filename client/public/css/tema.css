@@ -1,0 +1,260 @@
+/* ====================================================
+   DESIGN SYSTEM - VARIÁVEIS GLOBAIS (:root)
+   Paleta Estrita: Preto (#000000), Vermelho (#FF0000) e Branco (#FFFFFF)
+   ==================================================== */
+:root {
+  /* Cores Base do Sistema (Estritamente Restrito) */
+  --cor-fundo: #FFFFFF; /* Branco absoluto */
+  --cor-texto-principal: #000000; /* Preto para leitura sobre branco */
+  --cor-texto-inverso: #FFFFFF; /* Branco para leitura sobre preto ou vermelho */
+  --cor-destaque: #FF0000; /* Vermelho puro para hovers, botões e ações importantes */
+  --cor-borda: #000000; /* Preto para contornos e separações */
+  --cor-menu: #000000; /* Fundo Preto para o Cabeçalho (Navbar) */
+
+  /* Espaçamentos e Formas */
+  /* Um design com 3 cores absolutas pede formas mais brutas, então zeramos o arredondamento */
+  --radius-padrao: 10px; 
+  --fonte-principal: 'Arial', sans-serif;
+}
+
+/* ====================================================
+   ESTILOS GLOBAIS E ESTRUTURA DO FOOTER FIXO (Flexbox)
+   ==================================================== */
+body {
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto-principal);
+  font-family: var(--fonte-principal);
+  margin: 0;
+  padding: 0;
+  
+  /* Lógica Flexbox ensinada na aula para empurrar o Footer pro chão */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* 100% da altura visível da tela */
+}
+
+/* Classe atribuída ao rodapé */
+.footer-sistema {
+  margin-top: auto; /* A mágica acontece aqui: margem automática expulsa ele pro limite de baixo! */
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--cor-fundo);
+  border-top: 1px solid var(--cor-borda);
+}
+
+/* ====================================================
+   CLASSES AUXILIARES DE ALINHAMENTO
+   ==================================================== */
+
+/* Ocupa o espaço livre do body e centraliza vertical e horizontalmente */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1; /* Puxa todo o espaço gerado pelo flex-direction: column do body */
+  padding: 20px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 20px auto;
+  padding: 20px;
+}
+
+/* ====================================================
+   TABELAS DE DADOS PADRONIZADAS
+   ==================================================== */
+.tabela-dados {
+  width: 100%; /* Faz a tabela esticar e ocupar todo o container */
+  border-collapse: collapse;
+  background-color: var(--cor-fundo);
+  margin-top: 20px;
+  margin-bottom: 40px;
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.1); /* Sombra sutil para destaque */
+}
+
+.tabela-dados th {
+  background-color: var(--cor-primaria);
+  color: var(--cor-texto-inverso);
+  padding: 15px;
+  border: 1px solid var(--cor-borda);
+  text-align: left;
+}
+
+.tabela-dados td {
+  padding: 15px;
+  border: 1px solid var(--cor-borda);
+  vertical-align: middle;
+}
+
+/* ====================================================
+   COMPONENTES VISUAIS (Botões e Inputs)
+   ==================================================== */
+
+/* Botões Padronizados */
+.btn {
+  background-color: var(--cor-texto-principal); /* Botão Preto por padrão */
+  color: var(--cor-texto-inverso); /* Texto Branco */
+  border: 2px solid var(--cor-borda);
+  padding: 10px 20px;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: var(--radius-padrao);
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* Mudança de cor no Hover (Interação) */
+.btn:hover {
+  background-color: var(--cor-destaque); /* Fica Vermelho ao passar o mouse */
+  border-color: var(--cor-destaque);
+}
+
+/* Inputs de Formulários */
+.form-control {
+  width: 95%;
+  padding: 12px 8px;
+  border: 2px solid var(--cor-borda); /* Borda Preta sólida */
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto-principal);
+  margin-bottom: 15px;
+  border-radius: var(--radius-padrao);
+  font-size: 16px;
+}
+
+/* Ao clicar para digitar (Focus), a borda fica vermelha */
+.form-control:focus {
+  outline: none;
+  border-color: var(--cor-destaque); 
+}
+
+/* ====================================================
+   FORM GRID (Layout em 2 Colunas)
+   ==================================================== */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Divide a largura meio a meio */
+  gap: 20px; /* Espaço entre colunas e linhas */
+}
+
+/* Classe para o elemento pular as 2 colunas e ocupar a linha inteira */
+.col-full {
+  grid-column: 1 / -1;
+}
+
+/* Responsividade: No Celular, as duas colunas quebram para uma só (Empilha) */
+@media (max-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ====================================================
+   CONTAINER DE PREVIEW DE IMAGEM
+   ==================================================== */
+.preview-container {
+  margin-top: 10px;
+  border: 1px solid var(--cor-destaque); /* Borda Vermelha Fina para dar Destaque */
+  padding: 5px;
+  background-color: var(--cor-fundo);
+  text-align: center;
+  display: none; /* Começa oculto até que o JS injete a foto */
+  border-radius: var(--radius-padrao);
+}
+
+.preview-container img {
+  max-width: 100%;
+  max-height: 250px;
+  object-fit: contain; /* Ajusta a foto sem distorcer as proporções */
+}
+
+/* ====================================================
+   CABEÇALHO (NAVBAR) E MENUS DROPDOWN PÚROS
+   ==================================================== */
+.header-sistema {
+  background-color: var(--cor-menu); /* Fundo Preto Exigido */
+  color: var(--cor-texto-inverso); /* Letra Branca Exigida */
+  padding: 15px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 5px solid var(--cor-destaque); /* Linha vermelha elegante embaixo */
+}
+
+.header-sistema h2 {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Container que segura o botão e o menu oculto juntos */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+/* Botão que serve como gatilho do Menu */
+.dropdown-btn {
+  background-color: transparent;
+  color: var(--cor-texto-inverso); /* Branco */
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 10px;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+
+/* Quando o mouse passar em cima do título na barra de navegação */
+.dropdown-btn:hover {
+  color: var(--cor-destaque); /* Texto fica Vermelho */
+}
+
+/* O Conteúdo Suspenso (A caixinha do menu) */
+.dropdown-content {
+  display: none; /* REGRA PRINCIPAL: Escondido por padrão! */
+  position: absolute;
+  background-color: var(--cor-fundo); /* Fundo Branco */
+  min-width: 200px;
+  border: 2px solid var(--cor-borda); /* Borda Preta ao redor do menu */
+  z-index: 1000;
+  top: 100%; /* Cola exatamente embaixo do botão */
+  left: 0;
+}
+
+/* Os Links clicáveis dentro da caixinha */
+.dropdown-content a {
+  color: var(--cor-texto-principal); /* Link Preto */
+  padding: 15px;
+  text-decoration: none;
+  display: block;
+  font-weight: bold;
+  border-bottom: 1px solid var(--cor-borda); /* Separação preta */
+  text-transform: uppercase;
+  font-size: 14px;
+}
+
+.dropdown-content a:last-child {
+  border-bottom: none; /* Tira a linha do último item */
+}
+
+/* Efeito Hover dentro do submenu */
+.dropdown-content a:hover {
+  background-color: var(--cor-destaque); /* Fundo fica vermelho */
+  color: var(--cor-texto-inverso); /* Letra fica Branca (Exigência de Contraste) */
+}
+
+/* Classe controlada pelo JavaScript para fazer a mágica de aparecer */
+.dropdown-content.mostrar {
+  display: block; /* Sai do "none" e vira "block" (visível) */
+}

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TrocaApp - Sistema MVC</title>
+    
+    <!-- Design System Base -->
+    <link rel="stylesheet" href="/css/tema.css">
+    
+    <!-- IMPORTAÇÃO DA CDN DO FONT AWESOME PARA ÍCONES -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- A NAVBAR DEVE APARECER SEMPRE (O IF foi removido de fora dela) -->
+    <header class="header-sistema">
+        <a href="/">
+            <img src="/img/logo2horizontalss.png" width="240" height="070" alt="TrocaApp">
+        </a>
+        
+        <nav class="nav-menu">
+            
+            <!-- CHECAGEM DE SESSÃO: Se estiver Logado, mostra os menus de perfis -->
+            <% if (typeof usuario !== 'undefined' && usuario) { %>
+                
+                <span style="color: var(--cor-destaque); font-weight: bold; margin-right: 15px;">
+                    <i class="fa-solid fa-user"></i> Olá, <%= usuario.nome %>!
+                </span>
+
+                <% if (usuario.perfil === 'administrador') { %>
+                    <div class="dropdown">
+                        <button class="dropdown-btn" onclick="toggleMenu('menuUsuarios')">
+                            <i class="fa-solid fa-user-shield"></i> Gerenciamento Admin ▼
+                        </button>
+                        <div id="menuUsuarios" class="dropdown-content">
+                            <a href="/usuarios"><i class="fa-solid fa-users"></i> Visualizar Usuários</a>
+                            <a href="/usuarios/cadastro"><i class="fa-solid fa-user-plus"></i> Cadastrar Novo</a>
+                        </div>
+                    </div>
+                <% } %>
+
+                <% if (usuario.perfil === 'ofertante') { %>
+                    <div class="dropdown">
+                        <button class="dropdown-btn" onclick="toggleMenu('menuProdutos')">
+                            <i class="fa-solid fa-box"></i> Meus Produtos ▼
+                        </button>
+                        <div id="menuProdutos" class="dropdown-content">
+                            <a href="/produtos/meus-produtos"><i class="fa-solid fa-list"></i> Painel Pessoal</a>
+                        </div>
+                    </div>
+                    <a href="/produtos/vitrine" class="btn" style="border: none; background: transparent; padding: 10px;">
+                        <i class="fa-solid fa-shop"></i> Vitrine Pública
+                    </a>
+                <% } %>
+
+                <% if (usuario.perfil === 'interessado') { %>
+                    <a href="/produtos/vitrine" class="btn" style="border: none; background: transparent; padding: 10px;">
+                        <i class="fa-solid fa-shop"></i> Vitrine de Trocas
+                    </a>
+                <% } %>
+                
+                <a href="/usuarios/logout" class="btn btn-danger" style="margin-left: 20px;">
+                    <i class="fa-solid fa-right-from-bracket"></i> Sair
+                </a>
+
+            <!-- SE NÃO ESTIVER LOGADO (MODO PÚBLICO) -->
+            <% } else { %>
+                <a href="/login" class="btn btn-primary" style="background-color: transparent; border: 2px solid var(--cor-fundo);">
+                    <i class="fa-solid fa-right-to-bracket"></i> Fazer Login
+                </a>
+                <a href="/cadastro" class="btn btn-secondary">
+                    <i class="fa-solid fa-user-plus"></i> Criar Conta
+                </a>
+            <% } %>
+
+        </nav>
+    </header>
+
+    <script>
+        function toggleMenu(menuId) {
+            const todosOsMenus = document.querySelectorAll('.dropdown-content');
+            todosOsMenus.forEach(menu => {
+                if(menu.id !== menuId) {
+                    menu.classList.remove('mostrar');
+                }
+            });
+            const menuAlvo = document.getElementById(menuId);
+            if(menuAlvo) menuAlvo.classList.toggle('mostrar');
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropdown-btn')) {
+                const todosOsMenus = document.querySelectorAll('.dropdown-content');
+                todosOsMenus.forEach(menu => menu.classList.remove('mostrar'));
+            }
+        }
+    </script>

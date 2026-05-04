@@ -1,0 +1,75 @@
+<%- include('partials/header') %>
+
+<div class="container" style="width: 80%; max-width: none;">
+    <!-- Seguindo o Design System de caixas grossas e alto contraste -->
+    <div class="card" style="padding: 2rem; border: 2px solid var(--cor-borda); box-shadow: 6px 6px 0px var(--cor-borda); background-color: var(--cor-fundo);">
+        
+        <h2 style="color: var(--cor-destaque); text-align: center; margin-bottom: 5px;">
+            <i class="fa-solid fa-user-plus"></i> Cadastro de Conta
+        </h2>
+        <p style="color: var(--cor-texto-secundario); text-align: center; margin-bottom: 2rem;">Preencha os dados abaixo.</p>
+        
+        <!-- ========================================================
+             DIDÁTICA IMPORTANTE: ENCTYPE MULTIPART
+             Sempre que houver input type="file", o formulário DEVE 
+             avisar o backend com o atributo enctype="multipart/form-data".
+             ======================================================== -->
+        <form action="/usuarios/cadastrar" method="POST" enctype="multipart/form-data">
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="nome"><i class="fa-solid fa-id-card"></i> Nome Completo</label>
+                    <input type="text" id="nome" name="nome" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="telefone"><i class="fa-solid fa-phone"></i> Telefone / WhatsApp</label>
+                    <input type="text" id="telefone" name="telefone" class="form-control" placeholder="Ex: 11999999999" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email"><i class="fa-solid fa-envelope"></i> E-mail</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="senha"><i class="fa-solid fa-lock"></i> Senha</label>
+                    <input type="password" id="senha" name="senha" class="form-control" required>
+                </div>
+                
+                <div class="form-group col-full">
+                    <label for="perfil"><i class="fa-solid fa-users"></i> Qual o papel?</label>
+                    <select id="perfil" name="perfil" class="form-control" required>
+                        <option value="ofertante">Quero Oferecer Produtos</option>
+                        <option value="interessado">Estou em busca de Produtos</option>
+                        
+                        <!-- Lógica Didática: O Perfil Admin só aparece na lista se QUEM estiver visualizando a página for um Admin logado! -->
+                        <% if (typeof usuario !== 'undefined' && usuario.perfil === 'administrador') { %>
+                            <option value="administrador" style="background-color: var(--cor-primaria); color: var(--cor-texto-inverso);">
+                                Administrador do Sistema (Restrito)
+                            </option>
+                        <% } %>
+                    </select>
+                </div>
+
+                <!-- A FOTO DEVE FICAR OBRIGATORIAMENTE POR ÚLTIMO, OCUPANDO A LINHA INTEIRA (col-full) -->
+                <div class="form-group col-full">
+                    <label for="foto"><i class="fa-solid fa-camera"></i> Foto de Perfil (Opcional)</label>
+                    <input type="file" id="foto" name="foto" class="form-control" accept="image/*">
+                    
+                    <!-- CAIXA DE PREVIEW CONTROLADA PELO COMPORTAMENTO.JS -->
+                    <div id="preview-box" class="preview-container">
+                        <img id="preview-img" src="" alt="Sua Foto de Perfil">
+                    </div>
+                </div>
+            </div>
+            
+            <button type="submit" class="btn btn-secondary col-full" style="width: 100%; margin-top: 15px;">
+                <i class="fa-solid fa-check"></i> Salvar Novo Usuário
+            </button>
+            
+        </form>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

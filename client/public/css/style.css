@@ -1,0 +1,137 @@
+/* ====================================================
+   DESIGN SYSTEM - VARIÁVEIS GLOBAIS (:root)
+   ==================================================== */
+:root {
+  /* Paleta de Cores Principais */
+  --cor-primaria: #4F46E5; /* Indigo forte - Ação Principal */
+  --cor-primaria-hover: #4338CA;
+  --cor-secundaria: #10B981; /* Verde esmeralda - Sucesso/Troca */
+  --cor-fundo: #F3F4F6; /* Cinza bem claro para o fundo da tela */
+  --cor-superficie: #FFFFFF; /* Fundo branco dos cartões e formulários */
+  --cor-texto-principal: #1F2937;
+  --cor-texto-secundario: #6B7280;
+  --cor-borda: #E5E7EB;
+  --cor-perigo: #EF4444; /* Vermelho para exclusões */
+
+  /* Tipografia */
+  --fonte-principal: 'Inter', system-ui, sans-serif;
+
+  /* Espaçamentos e Bordas */
+  --radius-padrao: 50px;
+  --sombra-suave: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* ====================================================
+   RESET E ESTILOS GLOBAIS
+   ==================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--fonte-principal);
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto-principal);
+  line-height: 1.5;
+}
+
+/* ====================================================
+   COMPONENTES REAPROVEITÁVEIS
+   ==================================================== */
+
+/* Contêiner principal para centralizar conteúdo */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+/* Cartões (Cards) usados em formulários e itens da vitrine */
+.card {
+  background-color: var(--cor-superficie);
+  border-radius: var(--radius-padrao);
+  box-shadow: var(--sombra-suave);
+  padding: 1.5rem;
+  border: 1px solid var(--cor-borda);
+}
+
+/* Formulários - Inputs e Labels padronizados */
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--radius-padrao);
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--cor-primaria);
+}
+
+/* ====================================================
+   BOTÕES GLOBAIS
+   ==================================================== */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  border-radius: var(--radius-padrao);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn:active { transform: scale(0.98); } /* Micro-interação ao clicar */
+
+.btn-primary {
+  background-color: var(--cor-primaria);
+  color: #fff;
+}
+.btn-primary:hover { background-color: var(--cor-primaria-hover); }
+
+.btn-success {
+  background-color: var(--cor-secundaria);
+  color: #fff;
+}
+
+.btn-danger {
+  background-color: var(--cor-perigo);
+  color: #fff;
+}
+
+/* ====================================================
+   LAYOUT E GRIDS
+   ==================================================== */
+/* Grid para listar produtos lado a lado responsivamente */
+.grid-produtos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Layout do Header (Cabecalho superior) */
+.header {
+  background-color: var(--cor-superficie);
+  padding: 1rem 2rem;
+  box-shadow: var(--sombra-suave);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

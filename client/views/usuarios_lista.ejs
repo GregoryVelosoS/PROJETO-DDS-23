@@ -1,0 +1,45 @@
+<%- include('partials/header') %>
+
+<div class="container">
+    <h2>Lista de Usuários</h2>
+    
+    <!-- Botão usando nossa cor secundária (Vermelha) para destaque de ação -->
+    <a href="/usuarios/cadastro" class="btn btn-primary" style="margin-bottom: 20px;">+ Novo Usuário</a>
+
+    <!-- A tabela agora utiliza a nova classe CSS 'tabela-dados' que força width: 100% -->
+    <table class="tabela-dados">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Perfil</th>
+                <th style="text-align: center;">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% usuarios.forEach(function(u) { %>
+                <tr>
+                    <td><%= u.id %></td>
+                    <td><%= u.nome %></td>
+                    <td><%= u.email %></td>
+                    <td><%= u.perfil.toUpperCase() %></td>
+                    
+                    <td style="text-align: center; white-space: nowrap;">
+                        <a href="/usuarios/editar/<%= u.id %>" class="btn btn-secondary">
+                            <i class="fa-solid fa-pen"></i> Editar
+                        </a>
+                        
+                        <form action="/usuarios/deletar/<%= u.id %>" method="POST" style="display:inline;" onsubmit="return confirm('Deseja excluir este usuário?');">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fa-solid fa-trash"></i> Excluir
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</div>
+
+<%- include('partials/footer') %>

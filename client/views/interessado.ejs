@@ -1,0 +1,46 @@
+<%- include('partials/header') %>
+
+<div class="container">
+    <h2>Vitrine de Trocas</h2>
+    <p style="color: var(--cor-texto-secundario); margin-bottom: 2rem;">
+        Estes são os produtos que outros usuários sinalizaram que estão "Disponíveis para Troca" (status_troca = true).
+    </p>
+
+    <!-- Reaproveitando a Grid e o Card do Design System -->
+    <div class="grid-produtos" id="vitrine-produtos">
+        
+        <!-- CARD EXEMPLO (Renderização inicial que depois será populada pelo Front) -->
+        <div class="card">
+            <h3 style="color: var(--cor-primaria);">Teclado Mecânico</h3>
+            <p><strong>Descrição:</strong> Switch azul, semi-novo.</p>
+            
+            <div style="background-color: var(--cor-fundo); padding: 0.5rem; border-radius: var(--radius-padrao); margin: 1rem 0;">
+                <p style="font-size: 0.85rem;">👤 Ofertante: João Silva</p>
+            </div>
+            
+            <button class="btn btn-primary" style="width: 100%;">Tenho Interesse</button>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Na aula, os alunos farão esta função buscar na API
+    async function carregarVitrine() {
+        const token = localStorage.getItem('token');
+        
+        // Simulação do código para o aluno:
+        /*
+        const resposta = await fetch('/produtos/disponiveis', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const produtos = await resposta.json();
+        // Fazer um .map() no array produtos e injetar o HTML no #vitrine-produtos
+        */
+    }
+
+    // Chama assim que a tela abre
+    carregarVitrine();
+</script>
+
+<%- include('partials/footer') %>
