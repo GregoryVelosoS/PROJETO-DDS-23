@@ -1,4 +1,4 @@
-<%- include('partials/header') %>
+<%- include('../partials/header') %>
 
 <div class="container">
     <h2>Painel do Ofertante</h2>
@@ -12,13 +12,13 @@
         <p style="font-size: 14px; margin-bottom: 15px;">Estes usuários clicaram em "Tenho Interesse" nos seus produtos públicos.</p>
         
         <% if(interessados && interessados.length > 0) { %>
-            <table style="width: 100%; border-collapse: collapse; background-color: var(--cor-fundo);">
+            <table class="tabela-dados">
                 <thead>
-                    <tr style="background-color: var(--cor-primaria); color: var(--cor-fundo);">
-                        <th style="padding: 10px; border: 1px solid var(--cor-borda);">Data do Match</th>
-                        <th style="padding: 10px; border: 1px solid var(--cor-borda);">Qual Produto?</th>
-                        <th style="padding: 10px; border: 1px solid var(--cor-borda);">Pessoa</th>
-                        <th style="padding: 10px; border: 1px solid var(--cor-borda);">Contato (WhatsApp)</th>
+                    <tr>
+                        <th>Data do Match</th>
+                        <th>Qual Produto?</th>
+                        <th>Pessoa</th>
+                        <th>Contato (WhatsApp)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,7 +26,14 @@
                         <tr>
                             <!-- Formata a data do banco para o padrão brasileiro -->
                             <td style="padding: 10px; border: 1px solid var(--cor-borda);"><%= new Date(i.data_interesse).toLocaleDateString('pt-BR') %></td>
-                            <td style="padding: 10px; border: 1px solid var(--cor-borda);"><strong><%= i.nome_produto %></strong></td>
+                            <td style="padding: 10px; border: 1px solid var(--cor-borda);">
+                                <div style="display: flex; align-items: center; justify-content: space-between;">
+                                    <strong><%= i.nome_produto %></strong>
+                                    <a href="/produtos/editar/<%= i.id_produto %>" class="btn btn-secondary" style="font-size: 11px; padding: 4px 8px; background-color: var(--cor-fundo); color: var(--cor-texto-principal); margin-left: 10px;">
+                                        <i class="fa-solid fa-magnifying-glass"></i> Detalhes
+                                    </a>
+                                </div>
+                            </td>
                             <td style="padding: 10px; border: 1px solid var(--cor-borda);"><%= i.nome_interessado %></td>
                             <td style="padding: 10px; border: 1px solid var(--cor-borda); font-weight: bold; color: var(--cor-destaque);">
                                 <%= i.telefone_interessado %>
@@ -111,4 +118,4 @@
     </table>
 </div>
 
-<%- include('partials/footer') %>
+<%- include('../partials/footer') %>

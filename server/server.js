@@ -32,7 +32,8 @@ app.use(express.static(path.join(__dirname, '../client/public')));
 // ROTA DE TESTE: Para verificar se o servidor subiu corretamente
 // 'app.get' define que quando o cliente acessar a rota raiz ('/') via método GET, esta função rodará.
 app.get('/', (req, res) => {
-    res.json({ mensagem: 'Servidor do Sistema de Trocas está rodando com sucesso!' })
+    // CORREÇÃO: Removido o res.json e adicionado o redirecionamento para o fluxo da tela do MVC
+    res.redirect('/login');
 });
 
 // ==========================================
@@ -51,10 +52,9 @@ app.use('/produtos', produtoRoutes);
 // ==========================================
 // ROTAS DE RENDERIZAÇÃO DO FRONT-END (EJS)
 // ==========================================
-app.get('/login', (req, res) => res.render('login'));
-app.get('/cadastro', (req, res) => res.render('usuarios_cadastro')); // Cadastro unificado
-app.get('/ofertante', (req, res) => res.render('ofertante'));
-app.get('/interessado', (req, res) => res.render('interessado'));
+app.get('/login', (req, res) => res.render('auth/login'));
+app.get('/cadastro', (req, res) => res.render('auth/cadastro')); // Cadastro unificado
+app.get('/interessado', (req, res) => res.render('vitrine/interessado'));
 
 // DEFINIÇÃO DA PORTA
 // O servidor vai tentar pegar a porta configurada no .env. 

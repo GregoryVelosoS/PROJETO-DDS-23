@@ -37,7 +37,6 @@ body {
 .footer-sistema {
   margin-top: auto; /* A mágica acontece aqui: margem automática expulsa ele pro limite de baixo! */
   text-align: center;
-  padding: 2rem;
   background-color: var(--cor-fundo);
   border-top: 1px solid var(--cor-borda);
 }
@@ -75,8 +74,8 @@ body {
 }
 
 .tabela-dados th {
-  background-color: var(--cor-primaria);
-  color: var(--cor-texto-inverso);
+  background-color: var(--cor-fundo); /* Usando fundo branco para garantir contraste total */
+  color: var(--cor-texto-principal); /* CORREÇÃO: Forçando o texto para PRETO (#000000) */
   padding: 15px;
   border: 1px solid var(--cor-borda);
   text-align: left;

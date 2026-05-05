@@ -7,7 +7,7 @@ class ProdutoController {
     // ===============================================
     
     static renderizarCadastro(req, res) {
-        res.render('produtos_cadastro');
+        res.render('produtos/cadastrar');
     }
 
     // Controller interceptado pelo Multer salva o arquivo no servidor
@@ -45,7 +45,7 @@ class ProdutoController {
             const interessados = await ProdutoModel.buscarInteressadosNosMeusProdutos(idOfertante);
             
             // Renderiza passando as DUAS variáveis para o painel!
-            res.render('ofertante', { produtos: produtos, interessados: interessados });
+            res.render('produtos/listar', { produtos: produtos, interessados: interessados });
         } catch (erro) {
             res.status(500).send('Erro ao buscar dashboard.');
         }
@@ -56,7 +56,7 @@ class ProdutoController {
         try {
             const id = req.params.id; // Pegando o ID da URL Ex: /produtos/editar/5
             const produto = await ProdutoModel.buscarPorId(id);
-            res.render('produtos_edicao', { produto });
+            res.render('produtos/editar', { produto });
         } catch (erro) {
             res.status(500).send('Erro ao abrir tela de edição de produto.');
         }
@@ -105,7 +105,7 @@ class ProdutoController {
                 meusInteresses = await ProdutoModel.buscarInteressesDoUsuario(req.usuario.id);
             }
 
-            res.render('vitrine', { produtos, meusInteresses });
+            res.render('vitrine/index', { produtos, meusInteresses });
         } catch (erro) {
             res.status(500).send('Erro ao carregar a Vitrine de Trocas.');
         }

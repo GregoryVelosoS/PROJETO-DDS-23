@@ -18,7 +18,13 @@ class ProdutoModel {
 
     // Busca APENAS os públicos na base de dados (Exigência da Vitrine)
     static async listarVitrinePublica() {
-        const query = 'SELECT * FROM produtos WHERE is_publico = TRUE';
+        // Utilizamos JOIN para juntar a tabela de produtos com a de usuários e trazer o dono
+        const query = `
+            SELECT p.*, u.nome AS ofertante_nome, u.telefone AS ofertante_telefone 
+            FROM produtos p 
+            INNER JOIN usuarios u ON p.id_usuario = u.id 
+            WHERE p.is_publico = TRUE
+        `;
         const [linhas] = await db.execute(query);
         return linhas;
     }
@@ -92,6 +98,7 @@ class ProdutoModel {
         const query = `
             SELECT 
                 i.data_interesse,
+                p.id AS id_produto,
                 p.nome AS nome_produto,
                 u.nome AS nome_interessado,
                 u.telefone AS telefone_interessado

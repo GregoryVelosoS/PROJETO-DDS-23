@@ -8,7 +8,7 @@ class UsuarioController {
         try {
             const usuarios = await UsuarioModel.listarUsuarios();
             // Renderiza o arquivo EJS e manda a variável 'usuarios' para o HTML
-            res.render('usuarios_lista', { usuarios });
+            res.render('usuarios/listar', { usuarios });
         } catch (erro) {
             res.status(500).send('Erro ao listar usuários');
         }
@@ -16,7 +16,7 @@ class UsuarioController {
 
     // 2. CADASTRAR (GET): Apenas exibe a tela com o formulário em branco
     static renderizarCadastro(req, res) {
-        res.render('usuarios_cadastro');
+        res.render('usuarios/cadastrar');
     }
 
     // 2.1 CADASTRAR (POST): Recebe os dados do formulário e salva no banco
@@ -37,8 +37,24 @@ class UsuarioController {
             
             await UsuarioModel.criarUsuario(nome, email, senhaHash, telefone, fotoDaPessoa, perfil);
             
-            // Após salvar, redireciona o usuário para fazer login
-            res.redirect('/login');
+            // Lógica de Redirecionamento Dinâmico:
+            // Se quem está cadastrando for um Administrador logado no painel, ele volta pra lista.
+            // Se for um usuário anônimo se cadastrando na página pública, ele vai pro Login.
+            let redirecionarPara = '/login';
+            
+            if (req.cookies && req.cookies.token) {
+                try {
+                    // Tenta decodificar o crachá temporário para ver quem é
+                    const decodificado = jwt.verify(req.cookies.token, process.env.JWT_SECRET || 'chave_padrao');
+                    if (decodificado.perfil === 'administrador') {
+                        redirecionarPara = '/usuarios'; // Painel do Admin
+                    }
+                } catch (err) {
+                    // Se der erro no token, apenas ignora e mantém a pessoa indo pro login
+                }
+            }
+
+            res.redirect(redirecionarPara);
         } catch (erro) {
             console.error(erro);
             res.status(500).send('Erro ao cadastrar usuário');
@@ -54,7 +70,7 @@ class UsuarioController {
             const idVindoDaUrl = req.params.id; 
             
             const usuario = await UsuarioModel.buscarPorId(idVindoDaUrl);
-            res.render('usuarios_edicao', { usuario });
+            res.render('usuarios/editar', { usuario });
         } catch (erro) {
             res.status(500).send('Erro ao abrir tela de edição');
         }
@@ -64,9 +80,15 @@ class UsuarioController {
     static async atualizarUsuario(req, res) {
         try {
             const idVindoDaUrl = req.params.id; // Pegamos o ID da URL
-            const { nome, email, perfil } = req.body; // Pegamos os dados do Formulário (Body)
             
-            await UsuarioModel.atualizarUsuario(idVindoDaUrl, nome, email, perfil);
+            // CORREÇÃO: Extraindo o 'telefone' que estava faltando
+            const { nome, email, telefone, perfil } = req.body; 
+            
+            // CORREÇÃO: Resgatando o caminho do arquivo gerado pelo Multer
+            const fotoDaPessoa = req.file ? `/uploads/usuarios/${req.file.filename}` : null;
+            
+            // CORREÇÃO: Repassando 'telefone' e 'fotoDaPessoa' para a query
+            await UsuarioModel.atualizarUsuario(idVindoDaUrl, nome, email, telefone, fotoDaPessoa, perfil);
             res.redirect('/usuarios');
         } catch (erro) {
             res.status(500).send('Erro ao atualizar usuário');

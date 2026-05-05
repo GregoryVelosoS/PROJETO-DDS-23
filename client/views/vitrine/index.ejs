@@ -1,4 +1,4 @@
-<%- include('partials/header') %>
+<%- include('../partials/header') %>
 
 <div class="container" style="max-width: 1000px;">
     
@@ -33,9 +33,19 @@
                             <span style="background: var(--cor-texto-principal); color: var(--cor-texto-inverso); font-size: 11px; padding: 3px 6px; border-radius: 4px; margin-left: 10px; vertical-align: top;"><%= p.condicao.toUpperCase() %></span>
                         </div>
                         
-                        <p style="color: var(--cor-texto-secundario); font-size: 14px; line-height: 1.4; flex-grow: 1; margin-bottom: 20px;">
+                        <p style="color: var(--cor-texto-secundario); font-size: 14px; line-height: 1.4; flex-grow: 1; margin-bottom: 15px;">
                             <%= p.descricao %>
                         </p>
+                        
+                        <!-- DADOS DO ANUNCIANTE (Trazidos via JOIN no Model) -->
+                        <div style="background-color: var(--cor-fundo); border: 1px solid var(--cor-borda); border-left: 4px solid var(--cor-destaque); padding: 10px; margin-bottom: 20px; font-size: 13px;">
+                            <span style="display: block; color: var(--cor-texto-principal); margin-bottom: 4px;">
+                                <i class="fa-solid fa-user"></i> <strong>Por:</strong> <%= p.ofertante_nome %>
+                            </span>
+                            <span style="display: block; color: var(--cor-texto-principal);">
+                                <i class="fa-brands fa-whatsapp"></i> <strong>Contato:</strong> <%= p.ofertante_telefone %>
+                            </span>
+                        </div>
                         
                         <!-- BOTÃO DINÂMICO DE INTERESSE -->
                         <form action="/produtos/alternar-interesse/<%= p.id %>" method="POST" style="margin-top: auto;">
@@ -68,4 +78,4 @@
     </div>
 </div>
 
-<%- include('partials/footer') %>
+<%- include('../partials/footer') %>
